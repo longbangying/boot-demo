@@ -21,6 +21,11 @@ public class LimitController {
     public Result test(@RequestParam ("userName") String userName){
         Map resultMap = new HashMap();
         resultMap.put("userName",userName);
+        try {
+            Thread.sleep(15 * 1000);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return BaseResult.getResult(ResultEnum.RESULT_SUCCESS,resultMap);
     }
 }
