@@ -1,13 +1,24 @@
 package com.xbang.bootdemo.test;
 
-import java.util.concurrent.TimeUnit;
+
+import java.math.BigDecimal;
 
 public class Test {
 
     public static void main(String[] args) {
+        BigDecimal source = new BigDecimal(-1000);
 
-        TimeUnit timeUnit = TimeUnit.SECONDS;
+        BigDecimal rate = new BigDecimal("1.000058");
 
-        System.out.println(timeUnit.toMillis(1));
+        BigDecimal dest = source.multiply(rate);
+
+        System.out.println("source:" + source.toString() + " dest:" + dest.toString() + " rate:" + rate.toString());
+
+        System.out.println("rate:"+ dest.divide(source).toString());
+
     }
+
+
+
+
 }

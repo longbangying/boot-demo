@@ -63,13 +63,11 @@ public class TomcatConfiguration {
                 return ;
             }
             log.info("currentSize:{}",threadPoolExecutor.getActiveCount());
-
             try {
                 if(threadPoolExecutor.getActiveCount() > 0){
                     //如果还有请求
                     threadPoolExecutor.awaitTermination(60, TimeUnit.SECONDS);
                 }
-
                 threadPoolExecutor.shutdown();
             }catch (InterruptedException ex){
                 log.error("shutdown service with error:{}",ex.getMessage());

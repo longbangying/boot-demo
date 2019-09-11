@@ -1,9 +1,10 @@
 package com.xbang.bootdemo.controller;
 
-import com.example.commons.vo.result.BaseResult;
-import com.example.commons.vo.result.Result;
-import com.example.commons.vo.result.ResultEnum;
+
 import com.xbang.bootdemo.annotation.LimitConfig;
+import com.xbang.commons.vo.result.BaseResult;
+import com.xbang.commons.vo.result.Result;
+import com.xbang.commons.vo.result.ResultEnum;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;

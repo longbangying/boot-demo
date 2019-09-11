@@ -1,8 +1,8 @@
 package com.xbang.bootdemo.aop;
 
-import com.example.commons.vo.result.BaseResult;
-import com.example.commons.vo.result.ResultEnum;
 import com.xbang.bootdemo.annotation.LimitConfig;
+import com.xbang.commons.vo.result.BaseResult;
+import com.xbang.commons.vo.result.ResultEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
