@@ -18,6 +18,13 @@ server:
 spring:
   application:
     name: boot-demo
+  cache:
+    type: redis
+    redis:
+      use-key-prefix: true
+      key-prefix: redis-key
+
+
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
     username: root
@@ -30,4 +37,8 @@ mybatis-plus:
   #实体扫描，多个package用逗号或者分号分隔
   typeAliasesPackage: com.xbang.bootdemo.dao.entity
   #typeEnumsPackage: com.baomidou.springboot.entity.enums
+  configuration:
+    cache-enabled: true
+
+
 

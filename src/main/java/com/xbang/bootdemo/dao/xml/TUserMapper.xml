@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xbang.bootdemo.dao.mapper.TUserMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.xbang.bootdemo.dao.entity.TUser">
+        <id column="id" property="id" />
+        <result column="login_id" property="loginId" />
+        <result column="password_" property="password" />
+        <result column="user_name" property="userName" />
+        <result column="create_time" property="createTime" />
+        <result column="modify_time" property="modifyTime" />
+        <result column="money_" property="money" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, login_id, password_, user_name, create_time, modify_time, money_
+    </sql>
+
+</mapper>

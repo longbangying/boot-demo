@@ -49,7 +49,7 @@ public class MybatisPlusCodeGenerator {
         strategyConfig.setColumnNaming(NamingStrategy.underline_to_camel);
         strategyConfig.setRestControllerStyle(true);
         strategyConfig.setEntityTableFieldAnnotationEnable(true);
-        strategyConfig.setInclude(""); //需要生成的表名
+        strategyConfig.setInclude("t_user"); //需要生成的表名
 
         autoGenerator.setStrategy(strategyConfig);
         autoGenerator.execute();
