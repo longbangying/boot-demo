@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xbang.bootdemo.dao.mapper.TTradeMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.xbang.bootdemo.dao.entity.TTrade">
+        <id column="id" property="id" />
+        <result column="trade_no" property="tradeNo" />
+        <result column="trade_amount" property="tradeAmount" />
+        <result column="user_id" property="userId" />
+        <result column="product_id" property="productId" />
+        <result column="create_time" property="createTime" />
+        <result column="trade_status" property="tradeStatus" />
+        <result column="update_time" property="updateTime" />
+        <result column="quantity_" property="quantity" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, trade_no, trade_amount, user_id, product_id, create_time, trade_status, update_time, quantity_
+    </sql>
+
+</mapper>
