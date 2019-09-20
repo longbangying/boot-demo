@@ -14,8 +14,16 @@ import com.xbang.commons.exception.BaseException;
  */
 public interface ITMoneyService extends IService<TMoney> {
 
-    void increase(Long id) throws BaseException;
+    boolean increase(Long id) throws BaseException;
 
-    void decrease(Long id) throws BaseException;
+    boolean decrease(Long id) throws BaseException;
+    //悲观锁
+    void increaseWithLock(Long id) throws BaseException;
 
+    void decreaseWithLock(Long id) throws BaseException;
+
+    //乐观锁
+    void increaseWithOptimisticLock (Long id) throws BaseException;
+
+    void decreaseWithOptimisticLock(Long id) throws BaseException;
 }

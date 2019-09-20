@@ -2,6 +2,7 @@ package com.xbang.bootdemo.dao.entity;
 
 import java.math.BigDecimal;
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.Version;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableField;
@@ -35,6 +36,7 @@ public class TMoney extends Model<TMoney> {
      * 版本号
      */
     @TableField("version_")
+    @Version
     private Long version;
 
 

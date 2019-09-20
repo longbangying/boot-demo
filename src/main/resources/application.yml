@@ -2,7 +2,7 @@ logging:
   level:
     com:
       xbang:
-        bootdemo: trace
+        bootdemo: info
 management:
   endpoints:
     web:

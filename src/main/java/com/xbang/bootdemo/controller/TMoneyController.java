@@ -3,12 +3,16 @@ package com.xbang.bootdemo.controller;
 
 import com.xbang.bootdemo.dao.entity.TMoney;
 import com.xbang.bootdemo.service.face.ITMoneyService;
+import com.xbang.bootdemo.utils.TOOL;
 import com.xbang.commons.exception.BaseException;
 import com.xbang.commons.vo.result.BaseResult;
 import com.xbang.commons.vo.result.Result;
 import com.xbang.commons.vo.result.ResultEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * <p>
@@ -39,6 +43,37 @@ public class TMoneyController {
         itMoneyService.decrease(id);
         return Result.getResult(ResultEnum.RESULT_SUCCESS);
     }
+
+    @RequestMapping("/increase/optimisticlock")
+    public Result increaseOptimisticlock(@RequestParam("id") Long id){
+        itMoneyService.increaseWithOptimisticLock(id);
+        return Result.getResult(ResultEnum.RESULT_SUCCESS);
+    }
+    @RequestMapping("/decrease/optimisticlock")
+    public Result decreaseOptimisticlock(@RequestParam("id") Long id){
+        itMoneyService.decreaseWithOptimisticLock(id);
+        return Result.getResult(ResultEnum.RESULT_SUCCESS);
+    }
+
+
+    @RequestMapping("statistical")
+    public Result statistical(){
+        Map<String,Long> resultMap = new HashMap<>();
+        resultMap.put("success", TOOL.getSuccessCount());
+        resultMap.put("fail",TOOL.getFailCount());
+        resultMap.put("total",TOOL.getTotal());
+        return BaseResult.getResult(ResultEnum.RESULT_SUCCESS,resultMap);
+    }
+
+    @RequestMapping("clear")
+    public Result clear(){
+      Result result = statistical();
+      TOOL.clear();
+      return result;
+    }
+
+
+
 
     @ExceptionHandler(BaseException.class)
     public Result exception(BaseException baseException){
