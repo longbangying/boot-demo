@@ -49,7 +49,7 @@ public class MybatisPlusCodeGenerator {
         strategyConfig.setColumnNaming(NamingStrategy.underline_to_camel);
         strategyConfig.setRestControllerStyle(true);
         strategyConfig.setEntityTableFieldAnnotationEnable(true);
-        strategyConfig.setInclude("t_mybatisplus_lock_test"); //需要生成的表名
+        strategyConfig.setInclude("t_money"); //需要生成的表名
 
         autoGenerator.setStrategy(strategyConfig);
         autoGenerator.execute();
