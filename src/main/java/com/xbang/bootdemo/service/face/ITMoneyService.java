@@ -26,4 +26,8 @@ public interface ITMoneyService extends IService<TMoney> {
     void increaseWithOptimisticLock (Long id) throws BaseException;
 
     void decreaseWithOptimisticLock(Long id) throws BaseException;
+
+    void increaseWithDistributedLock(Long id)throws  BaseException;
+
+    void decreaseWithDistributedLock(Long id)throws  BaseException;
 }

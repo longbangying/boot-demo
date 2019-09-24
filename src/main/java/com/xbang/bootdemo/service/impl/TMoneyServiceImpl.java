@@ -4,10 +4,14 @@ import com.xbang.bootdemo.dao.entity.TMoney;
 import com.xbang.bootdemo.dao.mapper.TMoneyMapper;
 import com.xbang.bootdemo.service.face.ITMoneyService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.xbang.bootdemo.utils.DistributedLockUtils;
 import com.xbang.bootdemo.utils.TOOL;
 import com.xbang.commons.exception.BaseException;
 import com.xbang.commons.vo.result.ResultEnum;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.connection.RedisConnection;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,6 +34,12 @@ public class TMoneyServiceImpl extends ServiceImpl<TMoneyMapper, TMoney> impleme
     private static final Integer MAX_RETRY_TIME = 15;
 
     private final Lock lock = new ReentrantLock();
+    @Autowired
+    private StringRedisTemplate stringRedisTemplate;
+
+
+    @Autowired
+    DistributedLockUtils distributedLockUtils;
 
     @Transactional
     @Override
@@ -122,6 +132,55 @@ public class TMoneyServiceImpl extends ServiceImpl<TMoneyMapper, TMoney> impleme
         }
         log.info("id:{} retry:{} result:{}",id,retry,flag );
         statistical(flag);
+    }
+
+
+    @Override
+    public void increaseWithDistributedLock(Long id) throws BaseException {
+        String key = String.valueOf(id);
+        distributedLockUtils.lock(key,key,Boolean.TRUE);
+        increase(id);
+        distributedLockUtils.unlock(key);
+        /*RedisConnection redisConnection = null;
+        try {
+            redisConnection = stringRedisTemplate.getConnectionFactory().getConnection();
+
+            boolean lockFlag = redisConnection.setNX(key.getBytes(),key.getBytes());
+            statistical(lockFlag);
+            if(!lockFlag){
+                throw  new BaseException("抢不到锁");
+            }
+            increase(id);
+            redisConnection.del(key.getBytes());
+        } catch (Exception e) {
+           log.error(e.getMessage(),e);
+        } finally {
+            if(null != redisConnection){
+                redisConnection.close();
+            }
+        }*/
+    }
+
+    @Override
+    public void decreaseWithDistributedLock(Long id) throws BaseException {
+        RedisConnection redisConnection = null;
+        try {
+            redisConnection = stringRedisTemplate.getConnectionFactory().getConnection();
+            String key = String.valueOf(id);
+            boolean lockFlag = redisConnection.setNX(key.getBytes(),key.getBytes());
+            statistical(lockFlag);
+            if(!lockFlag){
+                throw  new BaseException("抢不到锁");
+            }
+            decrease(id);
+            redisConnection.del(key.getBytes());
+        } catch (Exception e) {
+            log.error(e.getMessage(),e);
+        } finally {
+            if(null != redisConnection){
+                redisConnection.close();
+            }
+        }
     }
 
 

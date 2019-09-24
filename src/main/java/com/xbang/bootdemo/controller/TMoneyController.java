@@ -3,6 +3,7 @@ package com.xbang.bootdemo.controller;
 
 import com.xbang.bootdemo.dao.entity.TMoney;
 import com.xbang.bootdemo.service.face.ITMoneyService;
+import com.xbang.bootdemo.utils.DistributedLockUtils;
 import com.xbang.bootdemo.utils.TOOL;
 import com.xbang.commons.exception.BaseException;
 import com.xbang.commons.vo.result.BaseResult;
@@ -11,8 +12,11 @@ import com.xbang.commons.vo.result.ResultEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.ServletRequest;
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * <p>
@@ -72,7 +76,30 @@ public class TMoneyController {
       return result;
     }
 
+    @RequestMapping("/increaseWithDistributedLock")
+    public Result increaseWithDistributedLock(@RequestParam("id") Long id , HttpServletRequest request){
+        request.setAttribute("requestId",UUID.randomUUID().toString());
+        itMoneyService.increaseWithDistributedLock(id);
+        return Result.getResult(ResultEnum.RESULT_SUCCESS);
+    }
 
+    @RequestMapping("decreaseWithDistributedLock")
+    public Result decreaseWithDistributedLock(@RequestParam("id") Long id){
+        itMoneyService.decreaseWithDistributedLock(id);
+        return Result.getResult(ResultEnum.RESULT_SUCCESS);
+    }
+
+    @Autowired
+    DistributedLockUtils distributedLockUtils;
+    @RequestMapping("getStatisticalInfo")
+    public Result getStatisticalInfo(){
+        return BaseResult.getResult(ResultEnum.RESULT_SUCCESS,distributedLockUtils.getStatisticalInfo());
+    }
+
+    @RequestMapping("clearStatisticalInfo")
+    public Result clearStatisticalInfo(){
+        return BaseResult.getResult(ResultEnum.RESULT_SUCCESS,distributedLockUtils.clearStatisticalInfo());
+    }
 
 
     @ExceptionHandler(BaseException.class)
