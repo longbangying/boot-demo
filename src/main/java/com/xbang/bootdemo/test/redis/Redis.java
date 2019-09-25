@@ -1,12 +1,14 @@
 package com.xbang.bootdemo.test.redis;
 
+import com.xbang.bootdemo.constant.CharsetConstant;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.connection.RedisConnection;
 import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 
-import java.io.UnsupportedEncodingException;
 import java.util.Set;
 
+@Slf4j
 public class Redis {
 
     private static  JedisConnectionFactory jedisConnectionFactory;
@@ -22,8 +24,7 @@ public class Redis {
 
 
     public static JedisConnectionFactory redisConnectionFactory(RedisStandaloneConfiguration redisStandaloneConfiguration){
-        JedisConnectionFactory jedisConnectionFactory = new JedisConnectionFactory(redisStandaloneConfiguration);
-        return jedisConnectionFactory;
+        return new JedisConnectionFactory(redisStandaloneConfiguration);
 
     }
 
@@ -33,21 +34,16 @@ public class Redis {
 
 
 
-    public static void main(String[] args)  throws UnsupportedEncodingException {
-
+    public static void main(String[] args)  {
+        String keyName = "xbang";
         RedisConnection jedisConnection = jedisConnectionFactory.getConnection();
         jedisConnection.select(2);
-        Set<byte[]> sets = jedisConnection.zRange("xbang".getBytes("utf-8"),0,jedisConnection.zCard("xbang".getBytes("utf-8")));
+        Set<byte[]> sets = jedisConnection.zRange(keyName.getBytes(CharsetConstant.CHARSET),0,jedisConnection.zCard(keyName.getBytes(CharsetConstant.CHARSET)));
         for(byte[] bytes : sets){
-            System.out.println(new String(bytes,"utf-8"));
+            log.info(new String(bytes,CharsetConstant.CHARSET));
         }
-
-        //long sss = jedisConnection.zRemRangeByScore("xbang".getBytes(),1,2);
-        //System.out.println(sss);
-        //jedisConnection.zAdd("xbang".getBytes(),3,"3".getBytes());
-
-        long ss = jedisConnection.zCard("xbang".getBytes("utf-8"));
-        System.out.println(ss);
+        long ss = jedisConnection.zCard(keyName.getBytes(CharsetConstant.CHARSET));
+        log.info("ss:{}",ss);
     }
 
 

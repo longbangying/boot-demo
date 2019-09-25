@@ -1,6 +1,7 @@
 package com.xbang.bootdemo.aop;
 
 import com.xbang.bootdemo.annotation.LimitConfig;
+import com.xbang.bootdemo.constant.CharsetConstant;
 import com.xbang.commons.vo.result.BaseResult;
 import com.xbang.commons.vo.result.ResultEnum;
 import lombok.extern.slf4j.Slf4j;
@@ -14,9 +15,7 @@ import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Method;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+
 
 @Component
 @Aspect
@@ -75,18 +74,18 @@ public class LimitAop {
             redisConnection = redisConnectionFactory.getConnection();
             redisConnection.select(2);
             long currentTimeMillis  = System.currentTimeMillis();
-            redisConnection.zRemRangeByScore(userName.getBytes("utf-8"),0,currentTimeMillis - limitConfig.unit().toMillis(limitConfig.time()));
+            redisConnection.zRemRangeByScore(userName.getBytes(CharsetConstant.CHARSET),0,currentTimeMillis - limitConfig.unit().toMillis(limitConfig.time()));
 
-            long currentSize = redisConnection.zCard(userName.getBytes("utf-8"));
+            long currentSize = redisConnection.zCard(userName.getBytes(CharsetConstant.CHARSET));
             if(currentSize >= limitConfig.value()){
                 return false;
             }
-            redisConnection.zAdd(userName.getBytes("utf-8"),currentTimeMillis,(currentTimeMillis+ "").getBytes("utf-8"));
+            redisConnection.zAdd(userName.getBytes(CharsetConstant.CHARSET),currentTimeMillis,(currentTimeMillis+ "").getBytes(CharsetConstant.CHARSET));
 
-            log.info("Key {} currentSize {}",userName,redisConnection.zCard(userName.getBytes("utf-8")));
+            log.info("Key {} currentSize {}",userName,redisConnection.zCard(userName.getBytes(CharsetConstant.CHARSET)));
             return true;
         } catch (Exception e) {
-            e.printStackTrace();
+            log.info(e.getMessage(),e);
         }finally {
             if(redisConnection != null ){
                 redisConnection.close();
