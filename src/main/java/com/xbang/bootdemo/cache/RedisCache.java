@@ -2,12 +2,10 @@ package com.xbang.bootdemo.cache;
 
 import com.alibaba.fastjson.JSON;
 import com.xbang.bootdemo.SpringUtils;
+import com.xbang.commons.exception.BaseException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.cache.Cache;
-import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
 import org.springframework.data.redis.connection.RedisConnection;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
@@ -19,7 +17,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 @Slf4j
 @Component
-public class RedisCache implements Cache, ApplicationContextAware {
+public class RedisCache implements Cache {
 
     private final ReadWriteLock readWriteLock = new ReentrantReadWriteLock();
     @Autowired
@@ -28,8 +26,6 @@ public class RedisCache implements Cache, ApplicationContextAware {
     private String id;
 
     private Integer datasource;
-
-    private ApplicationContext applicationContext;
 
     public RedisCache(String id, Integer datasource) {
         this.id = id;
@@ -83,27 +79,18 @@ public class RedisCache implements Cache, ApplicationContextAware {
     public void clear() {
         checkRedisTemplate();
         Set<String> keys = redisTemplate.keys("*");
-        if(keys == null || keys.isEmpty()){
-            return ;
+        if(!keys.isEmpty()){
+            long result = redisTemplate.delete(keys);
+            log.info("Redis Cache has {} keys and clear {} keys",keys.size(),result);
         }
-        long result = redisTemplate.delete(keys);
-        log.info("Redis Cache has {} keys and clear {} keys",keys.size(),result);
-
     }
 
     @Override
     public int getSize() {
         checkRedisTemplate();
         Set<String> keys = redisTemplate.keys("*");
-        return null == keys ? 0 : keys.size();
+        return  keys.size();
     }
-
-    @Override
-    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        log.info("对象:" + this.hashCode());
-        this.applicationContext = applicationContext;
-    }
-
 
     private void checkRedisTemplate(){
         log.info("对象1" + this.hashCode());
@@ -111,7 +98,7 @@ public class RedisCache implements Cache, ApplicationContextAware {
             redisTemplate = (RedisTemplate)SpringUtils.getApplicationContext().getBean("redisTemplate");
         }
         if(null == redisTemplate){
-            throw  new RuntimeException("redisTemplate is null");
+            throw  new BaseException("redisTemplate is null");
         }
 
     }
