@@ -4,6 +4,7 @@ import org.springframework.data.redis.connection.RedisConnection;
 import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 
+import java.io.UnsupportedEncodingException;
 import java.util.Set;
 
 public class Redis {
@@ -32,20 +33,20 @@ public class Redis {
 
 
 
-    public static void main(String[] args) {
+    public static void main(String[] args)  throws UnsupportedEncodingException {
 
         RedisConnection jedisConnection = jedisConnectionFactory.getConnection();
         jedisConnection.select(2);
-        Set<byte[]> sets = jedisConnection.zRange("xbang".getBytes(),0,jedisConnection.zCard("xbang".getBytes()));
+        Set<byte[]> sets = jedisConnection.zRange("xbang".getBytes("utf-8"),0,jedisConnection.zCard("xbang".getBytes("utf-8")));
         for(byte[] bytes : sets){
-            System.out.println(new String(bytes));
+            System.out.println(new String(bytes,"utf-8"));
         }
 
         //long sss = jedisConnection.zRemRangeByScore("xbang".getBytes(),1,2);
         //System.out.println(sss);
         //jedisConnection.zAdd("xbang".getBytes(),3,"3".getBytes());
 
-        long ss = jedisConnection.zCard("xbang".getBytes());
+        long ss = jedisConnection.zCard("xbang".getBytes("utf-8"));
         System.out.println(ss);
     }
 

@@ -11,6 +11,7 @@ import org.springframework.util.Assert;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import java.io.UnsupportedEncodingException;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -30,11 +31,11 @@ public class DistributedLockUtils {
     }
 
 
-    public boolean lock(String key,String value,boolean waitFor){
+    public boolean lock(String key,String value,boolean waitFor) throws UnsupportedEncodingException {
         RedisConnection redisConnection = getConnection();
         String requestId = (String) ((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getRequest().getAttribute("requestId");
         statisticalCount(requestId);
-        boolean lockFlag = redisConnection.setNX(key.getBytes(),value.getBytes());
+        boolean lockFlag = redisConnection.setNX(key.getBytes("utf-8"),value.getBytes("utf-8"));
         if(!lockFlag && waitFor){
             park(requestId);
             lock(key,value,Boolean.TRUE);
@@ -44,9 +45,9 @@ public class DistributedLockUtils {
     }
 
 
-    public void unlock(String key){
+    public void unlock(String key) throws UnsupportedEncodingException {
         RedisConnection redisConnection = getConnection();
-        redisConnection.del(key.getBytes());
+        redisConnection.del(key.getBytes("utf-8"));
         closeConnection(redisConnection);
         end();
     }
@@ -184,11 +185,11 @@ public class DistributedLockUtils {
             this.requestId = requestId;
         }
 
-        public Integer getLoopCount() {
+        public synchronized Integer getLoopCount() {
             return loopCount;
         }
 
-        public void setLoopCount(Integer loopCount) {
+        public synchronized void setLoopCount(Integer loopCount) {
             this.loopCount = loopCount;
         }
 
@@ -204,7 +205,7 @@ public class DistributedLockUtils {
             this.time = time;
         }
 
-        public void end(){
+        public synchronized void end(){
             this.endtime = System.currentTimeMillis();
             this.time = this.endtime - this.startTime;
         }

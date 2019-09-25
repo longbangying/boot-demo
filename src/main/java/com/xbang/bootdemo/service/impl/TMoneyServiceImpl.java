@@ -15,6 +15,7 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -138,27 +139,13 @@ public class TMoneyServiceImpl extends ServiceImpl<TMoneyMapper, TMoney> impleme
     @Override
     public void increaseWithDistributedLock(Long id) throws BaseException {
         String key = String.valueOf(id);
-        distributedLockUtils.lock(key,key,Boolean.TRUE);
-        increase(id);
-        distributedLockUtils.unlock(key);
-        /*RedisConnection redisConnection = null;
         try {
-            redisConnection = stringRedisTemplate.getConnectionFactory().getConnection();
-
-            boolean lockFlag = redisConnection.setNX(key.getBytes(),key.getBytes());
-            statistical(lockFlag);
-            if(!lockFlag){
-                throw  new BaseException("抢不到锁");
-            }
+            distributedLockUtils.lock(key,key,Boolean.TRUE);
             increase(id);
-            redisConnection.del(key.getBytes());
-        } catch (Exception e) {
-           log.error(e.getMessage(),e);
-        } finally {
-            if(null != redisConnection){
-                redisConnection.close();
-            }
-        }*/
+            distributedLockUtils.unlock(key);
+        } catch (UnsupportedEncodingException e) {
+            throw  new BaseException(e.getMessage());
+        }
     }
 
     @Override
@@ -167,13 +154,13 @@ public class TMoneyServiceImpl extends ServiceImpl<TMoneyMapper, TMoney> impleme
         try {
             redisConnection = stringRedisTemplate.getConnectionFactory().getConnection();
             String key = String.valueOf(id);
-            boolean lockFlag = redisConnection.setNX(key.getBytes(),key.getBytes());
+            boolean lockFlag = redisConnection.setNX(key.getBytes("utf-8"),key.getBytes("utf-8"));
             statistical(lockFlag);
             if(!lockFlag){
                 throw  new BaseException("抢不到锁");
             }
             decrease(id);
-            redisConnection.del(key.getBytes());
+            redisConnection.del(key.getBytes("utf-8"));
         } catch (Exception e) {
             log.error(e.getMessage(),e);
         } finally {

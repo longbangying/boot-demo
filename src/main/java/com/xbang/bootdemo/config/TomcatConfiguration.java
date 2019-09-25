@@ -42,7 +42,7 @@ public class TomcatConfiguration {
         public void customize(Connector connector) {
             this.connector = connector;
             //Executor 是一个线程池对象   取出来后可以对它的属性进行修改
-            Executor executor = connector.getProtocolHandler().getExecutor();
+            //Executor executor = connector.getProtocolHandler().getExecutor();
         }
 
 

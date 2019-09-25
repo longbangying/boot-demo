@@ -75,15 +75,15 @@ public class LimitAop {
             redisConnection = redisConnectionFactory.getConnection();
             redisConnection.select(2);
             long currentTimeMillis  = System.currentTimeMillis();
-            long zRems = redisConnection.zRemRangeByScore(userName.getBytes(),0,currentTimeMillis - limitConfig.unit().toMillis(limitConfig.time()));
+            redisConnection.zRemRangeByScore(userName.getBytes("utf-8"),0,currentTimeMillis - limitConfig.unit().toMillis(limitConfig.time()));
 
-            long currentSize = redisConnection.zCard(userName.getBytes());
+            long currentSize = redisConnection.zCard(userName.getBytes("utf-8"));
             if(currentSize >= limitConfig.value()){
                 return false;
             }
-            redisConnection.zAdd(userName.getBytes(),currentTimeMillis,(currentTimeMillis+ "").getBytes());
+            redisConnection.zAdd(userName.getBytes("utf-8"),currentTimeMillis,(currentTimeMillis+ "").getBytes("utf-8"));
 
-            log.info("Key {} currentSize {}",userName,redisConnection.zCard(userName.getBytes()));
+            log.info("Key {} currentSize {}",userName,redisConnection.zCard(userName.getBytes("utf-8")));
             return true;
         } catch (Exception e) {
             e.printStackTrace();

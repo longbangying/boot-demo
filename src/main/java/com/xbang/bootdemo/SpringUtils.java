@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class SpringUtils implements ApplicationContextAware {
 
-    private static ApplicationContext applicationContext;
+    private static   ApplicationContext applicationContext;
 
     private SpringUtils(){
 
@@ -19,7 +19,7 @@ public class SpringUtils implements ApplicationContextAware {
         SpringUtils.applicationContext = applicationContext;
     }
 
-    public static  ApplicationContext getApplicationContext(){
+    public static   ApplicationContext getApplicationContext(){
         return SpringUtils.applicationContext;
     }
 
