@@ -1,16 +1,20 @@
 package com.xbang.bootdemo.dao.entity;
 
 import java.math.BigDecimal;
+
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import com.baomidou.mybatisplus.annotation.TableId;
+
 import java.time.LocalDateTime;
+
 import com.baomidou.mybatisplus.annotation.TableField;
+
 import java.io.Serializable;
 
 /**
  * <p>
- * 
+ *
  * </p>
  *
  * @author xbang
@@ -18,7 +22,7 @@ import java.io.Serializable;
  */
 public class TTrade extends Model<TTrade> {
 
-    private static final long serialVersionUID=1L;
+    private static final long serialVersionUID = 1L;
 
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
@@ -149,15 +153,15 @@ public class TTrade extends Model<TTrade> {
     @Override
     public String toString() {
         return "TTrade{" +
-        "id=" + id +
-        ", tradeNo=" + tradeNo +
-        ", tradeAmount=" + tradeAmount +
-        ", userId=" + userId +
-        ", productId=" + productId +
-        ", createTime=" + createTime +
-        ", tradeStatus=" + tradeStatus +
-        ", updateTime=" + updateTime +
-        ", quantity=" + quantity +
-        "}";
+                "id=" + id +
+                ", tradeNo=" + tradeNo +
+                ", tradeAmount=" + tradeAmount +
+                ", userId=" + userId +
+                ", productId=" + productId +
+                ", createTime=" + createTime +
+                ", tradeStatus=" + tradeStatus +
+                ", updateTime=" + updateTime +
+                ", quantity=" + quantity +
+                "}";
     }
 }

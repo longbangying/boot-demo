@@ -16,6 +16,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/tUser")
 public class TUserController {
-
+    @RequestMapping("test")
+    public String test(){
+        return "success!";
+    }
 }
 

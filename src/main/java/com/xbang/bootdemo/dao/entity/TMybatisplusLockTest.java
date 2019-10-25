@@ -1,16 +1,18 @@
 package com.xbang.bootdemo.dao.entity;
 
 import java.math.BigDecimal;
+
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.Version;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableField;
+
 import java.io.Serializable;
 
 /**
  * <p>
- * 
+ *
  * </p>
  *
  * @author xbang
@@ -18,7 +20,7 @@ import java.io.Serializable;
  */
 public class TMybatisplusLockTest extends Model<TMybatisplusLockTest> {
 
-    private static final long serialVersionUID=1L;
+    private static final long serialVersionUID = 1L;
 
     /**
      * 主键
@@ -72,9 +74,9 @@ public class TMybatisplusLockTest extends Model<TMybatisplusLockTest> {
     @Override
     public String toString() {
         return "TMybatisplusLockTest{" +
-        "id=" + id +
-        ", targetValue=" + targetValue +
-        ", targetVersion=" + targetVersion +
-        "}";
+                "id=" + id +
+                ", targetValue=" + targetValue +
+                ", targetVersion=" + targetVersion +
+                "}";
     }
 }

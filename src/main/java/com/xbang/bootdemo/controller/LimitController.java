@@ -23,7 +23,7 @@ public class LimitController {
         Map resultMap = new HashMap();
         resultMap.put("userName",userName);
         try {
-            Thread.sleep(15 * 1000);
+            Thread.sleep(15 * 100);
         } catch (Exception e) {
             e.printStackTrace();
         }

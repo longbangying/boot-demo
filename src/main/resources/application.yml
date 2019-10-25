@@ -2,7 +2,11 @@ logging:
   level:
     com:
       xbang:
-        bootdemo: info
+        bootdemo: trace
+    org:
+      springframework:
+        security:
+          web: trace
 management:
   endpoints:
     web:
@@ -31,6 +35,15 @@ spring:
     password: Soar18786611964
     url: jdbc:mysql://47.104.171.254:3306/user-provider?useUnicode=true&characterEncoding=gbk&zeroDateTimeBehavior=convertToNull&useSSL=false
 
+  security:
+    user:
+      name: admin
+      password: xbang
+
+
+  thymeleaf:
+    cache: false
+    prefix: classpath:/templates/
 
 mybatis-plus:
   mapper-locations: classpath:/mapper/*.xml
@@ -39,6 +52,5 @@ mybatis-plus:
   #typeEnumsPackage: com.baomidou.springboot.entity.enums
   configuration:
     cache-enabled: true
-
 
 

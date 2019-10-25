@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <meta charset="UTF-8">
+    <title>首页</title>
+</head>
+<body>
+<h1>首页<a href="#" th:href="@{/thymeleaf/login}" sec:authorize="!isAuthenticated()">请登录</a></h1>
+<form th:action="@{logout}" method="post" sec:authorize="isAuthenticated()">
+    <span sec:authentication="name"></span><span sec:authentication="principal.authorities"></span><input type="submit" value="注销">
+</form>
+<a href="#" th:href="@{/level1}" sec:authorize="hasRole('Lev1')">等级1</a><br>
+<a href="#" th:href="@{/level2}" sec:authorize="hasRole('Lev2')">等级2</a><br>
+<a href="#" th:href="@{/level3}" sec:authorize="hasRole('Lev3')">等级3</a>
+</body>
+</html>

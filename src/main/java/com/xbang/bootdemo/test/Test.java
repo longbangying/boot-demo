@@ -1,8 +1,11 @@
 package com.xbang.bootdemo.test;
 
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.math.BigDecimal;
 
+@Slf4j
 public class Test {
 
     public static void main(String[] args) {
@@ -12,13 +15,11 @@ public class Test {
 
         BigDecimal dest = source.multiply(rate);
 
-        System.out.println("source:" + source.toString() + " dest:" + dest.toString() + " rate:" + rate.toString());
+        log.info("source:{} dest:{} rate:{}", source.toString(), dest.toString(), rate.toString());
 
-        System.out.println("rate:"+ dest.divide(source).toString());
+        log.info("rate:{}", dest.divide(source).toString());
 
     }
-
-
 
 
 }

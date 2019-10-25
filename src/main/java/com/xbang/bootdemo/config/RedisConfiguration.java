@@ -3,10 +3,14 @@ package com.xbang.bootdemo.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.connection.RedisSentinelConfiguration;
 import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Configuration
 public class RedisConfiguration {
@@ -21,6 +25,23 @@ public class RedisConfiguration {
     public RedisConnectionFactory redisConnectionFactory(RedisStandaloneConfiguration redisStandaloneConfiguration){
         JedisConnectionFactory jedisConnectionFactory = new JedisConnectionFactory(redisStandaloneConfiguration);
         return jedisConnectionFactory;
+
+    }
+
+    //@Bean
+    public RedisConnectionFactory redisConnectionFactory(RedisSentinelConfiguration redisSentinelConfiguration){
+        JedisConnectionFactory jedisConnectionFactory = new JedisConnectionFactory(redisSentinelConfiguration);
+        return jedisConnectionFactory;
+
+    }
+
+
+    @Bean
+    public RedisSentinelConfiguration redisSentinelConfiguration(){
+
+        Set<String> sentinelHostAndPort = new HashSet<>();
+        sentinelHostAndPort.add("192.168.153.131:6379");
+        return  new RedisSentinelConfiguration("MyMaster",sentinelHostAndPort);
 
     }
 
